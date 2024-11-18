@@ -7,8 +7,8 @@ require_once __DIR__ . "/../../../app/bootstrap.php";
 $pesanan = new PesananController();
 $data = $pesanan->getAllPesanan();
 
-if (isset($_GET['accept'])) {
-    if ($pesanan->acceptPesanan($_GET['accept'])) {
+if (isset($_GET['cancel'])) {
+    if ($pesanan->deletePesanan($_GET['cancel'])) {
     }
     header('Location: ' . strtok($_SERVER["REQUEST_URI"], '?'));
 }
@@ -25,7 +25,7 @@ if (isset($_GET['accept'])) {
 <body class="bg-secondary-subtle">
     <?php require_once BASE_PATH . '/template/navbar.php' ?>
     <div class="container mt-5">
-        <table class="table table-striped table-bordered shadow-sm caption-top">
+        <table class="table table-striped table-bordered shadow-sm caption-top align-middle">
             <caption>
                 <h3>Purchase Order</h3>
             </caption>
@@ -64,11 +64,11 @@ if (isset($_GET['accept'])) {
                         <td><?= $psn['jumlah_barang'] ?></td>
                         <td><?= $psn['harga'] ?></td>
                         <td class="<?= $status ?>"><?= $psn['status'] ?></td>
-                        <?php if ($psn['status'] != 'Accepted'): ?>
-                            <td>
-                                <a href="?accept=<?= $psn['nomor_po'] ?>" class="btn btn-success">Accept</a>
-                            </td>
-                        <?php endif ?>
+                        <td>
+                            <?php if ($psn['status'] == 'Pending'): ?>
+                                <a href="?cancel=<?= $psn['nomor_po'] ?>" class="btn btn-danger">Cancel</a>
+                            <?php endif ?>
+                        </td>
                     </tr>
                 <?php endwhile ?>
             </tbody>

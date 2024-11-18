@@ -9,24 +9,51 @@ require_once BASE_PATH . "/app/bootstrap.php";
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
             <?php if (isset($_SESSION['username'])): ?>
+
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="<?= BASE_URL ?>">Home</a>
                     </li>
+
                     <?php if ($_SESSION['level'] == 'Admin'): ?>
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Data
+                                Master
                             </a>
                             <ul class="dropdown-menu">
+                                <a class="dropdown-item" href="<?= BASE_URL ?>/admin/user">User</a>
                                 <a class="dropdown-item" href="<?= BASE_URL ?>/admin/pelanggan">Pelanggan</a>
-                                <a class="dropdown-item" href="<?= BASE_URL ?>/admin/barang">Barang</a>
-                                <a class="dropdown-item" href="<?= BASE_URL ?>/admin/pesanan">Pesanan</a>
-                                <a class="dropdown-item" href="<?= BASE_URL ?>/admin/pembayaran">Pembayaran</a>
+                                <a class="dropdown-item" href="<?= BASE_URL ?>/admin/pemasok">Pemasok</a>
                             </ul>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Transaksi
+                            </a>
+                            <ul class="dropdown-menu">
+                                <a class="dropdown-item" href="<?= BASE_URL ?>/admin/barang">Barang</a>
+                                <a class="dropdown-item" href="<?= BASE_URL ?>/admin/pesanan">Purchase Order</a>
+                                <a class="dropdown-item" href="<?= BASE_URL ?>/admin/transaksi-pelanggan">Transaksi Pelanggan</a>
+                            </ul>
+                        </li>
+
+                    <?php elseif ($_SESSION['level'] == 'Manager'): ?>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Transaksi
+                            </a>
+                            <ul class="dropdown-menu">
+                                <a class="dropdown-item" href="<?= BASE_URL ?>/manager/barang">Barang</a>
+                                <a class="dropdown-item" href="<?= BASE_URL ?>/manager/pesanan">Purchase Order</a>
+                            </ul>
+                        </li>
+
                     <?php endif ?>
+
                 </ul>
                 <ul class="navbar-nav d-flex mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
@@ -38,7 +65,9 @@ require_once BASE_PATH . "/app/bootstrap.php";
                         </ul>
                     </li>
                 </ul>
+
             <?php else: ?>
+
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                     </li>

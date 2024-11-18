@@ -11,7 +11,7 @@ class UserController extends Database
         $username = $data['username'];
         $password = $data['password'];
 
-        $query = "SELECT * FROM account WHERE username = '$username'";
+        $query = "SELECT * FROM user WHERE username = '$username'";
         $result = mysqli_query($this->db, $query);
         $user = mysqli_fetch_assoc($result);
 
@@ -32,7 +32,7 @@ class UserController extends Database
 
         if ($password != $cPassword) return 0;
 
-        $query = "INSERT INTO account VALUES (0, '$username', '$password', '')";
+        $query = "INSERT INTO user VALUES (0, '$username', '$password', '')";
         $result = mysqli_query($this->db, $query);
 
         return mysqli_affected_rows($this->db);
@@ -45,6 +45,14 @@ class UserController extends Database
         session_destroy();
     }
 
+    function getAllUser()
+    {
+        $query = "SELECT * FROM user";
+        $result = mysqli_query($this->db, $query);
+
+        return $result;
+    }
+
     function checkLevel()
     {
         switch ($_SESSION['level']) {
@@ -54,6 +62,10 @@ class UserController extends Database
                 return header('Location: ' . BASE_URL . '/pelanggan/');
             case 'Pemasok':
                 return header('Location: ' . BASE_URL . '/pemasok/');
+            case 'Manager':
+                return header('Location: ' . BASE_URL . '/manager/');
+            default:
+                return http_response_code(404);
         }
     }
 }

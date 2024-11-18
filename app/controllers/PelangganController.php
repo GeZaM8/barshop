@@ -3,6 +3,7 @@
 namespace controllers;
 
 use models\Database;
+use mysqli_sql_exception;
 
 class PelangganController extends Database
 {
@@ -23,7 +24,7 @@ class PelangganController extends Database
         $query = "INSERT INTO pelanggan VALUES (0, '$nama', '$alamat', '$no_telp')";
         $result = mysqli_query($this->db, $query);
 
-        return mysqli_affected_rows($this->db);
+        return $result;
     }
 
     function updatePelanggan($data, $kode)
@@ -32,17 +33,22 @@ class PelangganController extends Database
         $alamat = $data['alamat'];
         $no_telp = $data['no_telp'];
 
-        $query = "UPDATE pelaggan SET nama = '$nama', alamat = '$alamat', $no_telp = '$no_telp' WHERE kode = '$kode'";
+        $query = "UPDATE pelanggan SET nama = '$nama', alamat = '$alamat', no_telp = '$no_telp' WHERE kode = '$kode'";
         $result = mysqli_query($this->db, $query);
 
-        return mysqli_affected_rows($this->db);
+        return $result;
     }
 
     function deletePelanggan($kode)
     {
-        $query = "DELETE FROM pelaggan WHERE kode = '$kode'";
-        $result = mysqli_query($this->db, $query);
+        try {
+            $query = "DELETE FROM pelanggan WHERE kode = '$kode'";
+            $result = mysqli_query($this->db, $query);
+        } catch (mysqli_sql_exception $e) {
+            echo $e->getCode();
+            return $result;
+        }
 
-        return mysqli_affected_rows($this->db);
+        return $result;
     }
 }
