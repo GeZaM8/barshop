@@ -64,11 +64,11 @@ if (isset($_GET['accept'])) {
                         <td><?= $psn['jumlah_barang'] ?></td>
                         <td><?= $psn['harga'] ?></td>
                         <td class="<?= $status ?>"><?= $psn['status'] ?></td>
-                        <?php if ($psn['status'] != 'Accepted'): ?>
-                            <td>
+                        <td>
+                            <?php if ($psn['status'] != 'Accepted'): ?>
                                 <a href="?accept=<?= $psn['nomor_po'] ?>" class="btn btn-success">Accept</a>
-                            </td>
-                        <?php endif ?>
+                            <?php endif ?>
+                        </td>
                     </tr>
                 <?php endwhile ?>
             </tbody>

@@ -20,8 +20,13 @@ class PelangganController extends Database
         $nama = $data['nama'];
         $alamat = $data['alamat'];
         $no_telp = $data['no_telp'];
+        $id = isset($data['id']) ? $data['id'] : null;
 
-        $query = "INSERT INTO pelanggan VALUES (0, '$nama', '$alamat', '$no_telp')";
+        $query = "INSERT INTO pelanggan VALUES (0";
+        if ($id != null) $query .= ", $id";
+        else $query .= ", null";
+        $query .= ", '$nama', '$alamat', '$no_telp')";
+
         $result = mysqli_query($this->db, $query);
 
         return $result;
@@ -32,8 +37,12 @@ class PelangganController extends Database
         $nama = $data['nama'];
         $alamat = $data['alamat'];
         $no_telp = $data['no_telp'];
+        $id = isset($data['id']) ? $data['id'] : null;
 
-        $query = "UPDATE pelanggan SET nama = '$nama', alamat = '$alamat', no_telp = '$no_telp' WHERE kode = '$kode'";
+        $query = "UPDATE pelanggan SET nama = '$nama', alamat = '$alamat', no_telp = '$no_telp'";
+        if ($id != null) $query .= ", id_account = '$id'";
+        $query .= " WHERE kode = '$kode'";
+
         $result = mysqli_query($this->db, $query);
 
         return $result;
@@ -50,5 +59,16 @@ class PelangganController extends Database
         }
 
         return $result;
+    }
+
+    function checkPelangganById($id = 0)
+    {
+        $user = ($id == 0) ? $_SESSION['id'] : $id;
+        $query = "SELECT * FROM pelanggan p 
+                INNER JOIN user u 
+                ON p.id_account = u.id 
+                WHERE u.id = $user";
+        $result = mysqli_query($this->db, $query);
+        return mysqli_num_rows($result) > 0;
     }
 }

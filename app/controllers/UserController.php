@@ -18,6 +18,7 @@ class UserController extends Database
         if ($user == null) return mysqli_affected_rows($this->db);
         if ($user['password'] != $password) return 0;
 
+        $_SESSION['id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['level'] = $user['level'];
 
@@ -29,10 +30,11 @@ class UserController extends Database
         $username = $data['username'];
         $password = $data['password'];
         $cPassword = $data['cPassword'];
+        $level = $data['level'];
 
         if ($password != $cPassword) return 0;
 
-        $query = "INSERT INTO user VALUES (0, '$username', '$password', '')";
+        $query = "INSERT INTO user VALUES (0, '$username', '$password', '$level')";
         $result = mysqli_query($this->db, $query);
 
         return mysqli_affected_rows($this->db);

@@ -1,10 +1,13 @@
 <?php
 
 use controllers\PelangganController;
+use controllers\UserController;
 
 require_once __DIR__ . "/../../../app/bootstrap.php";
 
 $pelanggan = new PelangganController();
+$user = new UserController();
+
 $data = $pelanggan->getAllPelanggan();
 $error = "";
 $code = 0;
@@ -43,7 +46,7 @@ if (isset($_GET['delete'])) {
 <body class="bg-secondary-subtle">
     <?php require_once BASE_PATH . '/template/navbar.php' ?>
     <div class="container mt-5">
-        <table class="table table-striped table-bordered shadow-sm caption-top">
+        <table class="table table-striped table-bordered shadow-sm caption-top align-middle">
             <caption>
                 <h3>Data Pelanggan</h3>
                 <!-- Button trigger modal -->
@@ -54,6 +57,7 @@ if (isset($_GET['delete'])) {
             <thead>
                 <tr>
                     <th scope="col" class="text-center">Kode</th>
+                    <th scope="col">Id Account</th>
                     <th scope="col">Nama Pelanggan</th>
                     <th scope="col">Alamat</th>
                     <th scope="col">No. Telp</th>
@@ -66,6 +70,21 @@ if (isset($_GET['delete'])) {
                         <tr>
                             <form action="?save=<?= $plg['kode'] ?>" method="post">
                                 <th scope="row"><input type="text" class="form-control text-center" value="<?= $plg['kode'] ?>" disabled></th>
+                                <th>
+                                    <?php if ($plg['id_account'] == null): ?>
+                                        <select name="id" id="id" class="form-select">
+                                            <?php
+                                            $dataUser = $user->getAllUser();
+                                            while ($usr = mysqli_fetch_assoc($dataUser)): ?>
+                                                <?php if ($usr['level'] == 'Pelanggan' && !$pelanggan->checkPelangganById($usr['id'])): ?>
+                                                    <option value="<?= $usr['id'] ?>"><?= $usr['username'] ?></option>
+                                                <?php endif ?>
+                                            <?php endwhile ?>
+                                        <?php else: ?>
+                                            <input type="text" name="id" class="form-control" value="<?= $plg['id_account'] ?>" disabled>
+                                        </select>
+                                    <?php endif ?>
+                                </th>
                                 <td><input type="text" class="form-control" name="nama" value="<?= $plg['nama'] ?>" required></td>
                                 <td><input type="text" class="form-control" name="alamat" value="<?= $plg['alamat'] ?>" required></td>
                                 <td><input type="tel" class="form-control" name="no_telp" value="<?= $plg['no_telp'] ?>" required></td>
@@ -78,6 +97,7 @@ if (isset($_GET['delete'])) {
                     <?php else: ?>
                         <tr>
                             <th scope="row" class="text-center" style="width: 70px;"><?= $plg['kode'] ?></th>
+                            <th scope="row"><?= $plg['id_account'] ?></th>
                             <td><?= $plg['nama'] ?></td>
                             <td><?= $plg['alamat'] ?></td>
                             <td><?= $plg['no_telp'] ?></td>

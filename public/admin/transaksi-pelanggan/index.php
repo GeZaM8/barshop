@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <td><input type="number" class="form-control" name="jumlah_barang" value="<?= $trs['jumlah_barang'] ?>" required></td>
                                 <td><input type="number" class="form-control" name="harga" value="<?= $trs['harga'] ?>" disabled></td>
                                 <td>
-                                    <select class="form-control <?= $status ?>" name="status" required>
+                                    <select class="form-control" name="status" required>
                                         <option value="Pending" <?= $trs['status'] == 'Pending' ? 'selected' : '' ?>>Pending</option>
                                         <option value="Paid" <?= $trs['status'] == 'Paid' ? 'selected' : '' ?>>Paid</option>
                                         <option value="Cancelled" <?= $trs['status'] == 'Cancelled' ? 'selected' : '' ?>>Cancelled</option>

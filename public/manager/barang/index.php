@@ -59,7 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <td><?= $brg['satuan'] ?></td>
                         <td><?= $brg['harga_beli'] ?></td>
                         <td><?= $brg['harga_jual'] ?></td>
-                        <td><?= $brg['jumlah'] ?></td>
+                        <td class="<?php if ($brg['jumlah'] == 0) echo 'bg-danger-subtle' ?>">
+                            <?= $brg['jumlah'] ?>
+                        </td>
                         <td style="width: 100px;">
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPesan" data-kode-barang="<?= $brg['kode'] ?>">
