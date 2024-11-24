@@ -7,6 +7,14 @@ require_once __DIR__ . "/../../../app/bootstrap.php";
 $pemasok = new PemasokController();
 $data = $pemasok->getAllpemasok();
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_POST['insert'])) {
+        if ($pemasok->insertPemasok($_POST)) {
+        }
+        header('Location: ' . $_SERVER['REQUEST_URI']);
+    }
+}
+
 if (isset($_GET['aktifkan'])) {
     if ($pemasok->activatePemasok($_GET['kode'], $_GET['aktifkan'])) {
     }
@@ -28,6 +36,10 @@ if (isset($_GET['aktifkan'])) {
         <table class="table table-striped table-bordered shadow-sm caption-top align-middle">
             <caption>
                 <h3>Data Pemasok</h3>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    Insert
+                </button>
             </caption>
             <thead>
                 <tr>
@@ -69,6 +81,34 @@ if (isset($_GET['aktifkan'])) {
                 <?php endwhile ?>
             </tbody>
         </table>
+    </div>
+
+
+    <!-- Modal insert -->
+    <div class="modal fade" id="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <form class="modal-content" method="post">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Insert Pemasok</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control mb-3" name="nama" placeholder="Nama">
+                    <input type="text" class="form-control mb-3" name="alamat" placeholder="alamat">
+                    <input type="text" class="form-control mb-3" name="no_telp" placeholder="No. Telepon">
+                    <input type="email" class="form-control mb-5" name="email" placeholder="Email">
+
+                    <label class="form-label mb-3">Account</label>
+                    <input type="text" class="form-control mb-3" name="username" placeholder="Username">
+                    <input type="password" class="form-control mb-3" name="password" placeholder="Password">
+                    <input type="password" class="form-control mb-3" name="cPassword" placeholder="Confirm Password">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" name="insert">Insert</button>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 

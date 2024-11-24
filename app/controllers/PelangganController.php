@@ -38,10 +38,12 @@ class PelangganController extends Database
         $alamat = $data['alamat'];
         $no_telp = $data['no_telp'];
         $id = isset($data['id']) ? $data['id'] : null;
+        $username = isset($data['username']) ? $data['username'] : null;
 
         $query = "UPDATE pelanggan SET nama = '$nama', alamat = '$alamat', no_telp = '$no_telp'";
-        if ($id != null) $query .= ", id_account = '$id'";
-        $query .= " WHERE kode = '$kode'";
+        if ($id != null) $query .= ", id_account = $id";
+        if ($username != null) $query .= ", username = '$username'";
+        $query .= " WHERE kode = $kode";
 
         $result = mysqli_query($this->db, $query);
 
@@ -69,6 +71,6 @@ class PelangganController extends Database
                 ON p.id_account = u.id 
                 WHERE u.id = $user";
         $result = mysqli_query($this->db, $query);
-        return mysqli_num_rows($result) > 0;
+        return $result;
     }
 }

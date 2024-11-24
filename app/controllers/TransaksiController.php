@@ -6,6 +6,13 @@ use models\Database;
 
 class TransaksiController extends Database
 {
+    private $pelanggan;
+
+    function __construct()
+    {
+        $this->pelanggan = new PelangganController();
+    }
+
     function getAllTransaksi()
     {
         $query = "SELECT * FROM transaksiView";
@@ -15,7 +22,19 @@ class TransaksiController extends Database
         return $result;
     }
 
-    function insertTransaksi($data) {}
+    function checkoutTransaksi($data)
+    {
+        $dataPelanggan = mysqli_fetch_assoc($this->pelanggan->checkPelangganById($_SESSION['id']));
+        if ($dataPelanggan == null) {
+            return false;
+        }
+        $kode_pelanggan = $data['kode'];
+
+        $query = "INSERT INTO transaksi (tanggal_order, kode_pelanggan) VALUES ('NOW()', $kode_pelanggan)";
+        $result = mysqli_query($this->db, $query);
+
+        return $result;
+    }
 
     function updateTransaksi($data, $nomor)
     {

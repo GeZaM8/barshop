@@ -29,7 +29,7 @@ class PesananController extends Database
         $jumlah = $data['jumlah'];
 
         $query = "INSERT INTO pesanan (kode_supplier, kode_barang, jumlah_barang)
-                 VALUES ($kodePemasok, $kodeBarang, $jumlah)";
+                 VALUES ($kodePemasok, $kodeBarang, 0)";
         $result = mysqli_query($this->db, $query);
 
         return $result;

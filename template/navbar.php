@@ -1,4 +1,7 @@
 <?php
+
+use controllers\PelangganController;
+
 require_once BASE_PATH . "/app/bootstrap.php";
 ?>
 
@@ -52,6 +55,12 @@ require_once BASE_PATH . "/app/bootstrap.php";
                             </ul>
                         </li>
 
+                    <?php elseif ($_SESSION['level'] == 'Pelanggan'): ?>
+
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="<?= BASE_URL ?>/pelanggan/barang">Barang</a>
+                        </li>
+
                     <?php endif ?>
 
                 </ul>
@@ -61,7 +70,15 @@ require_once BASE_PATH . "/app/bootstrap.php";
                             <?= $_SESSION['username'] ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
+                            <?php
+                            $pelanggan = new PelangganController();
+                            ?>
+                            <?php if ($_SESSION['level'] == "Pelanggan" && $pelanggan->checkPelangganById($_SESSION['id'])): ?>
+                                <a class="dropdown-item" href="<?= BASE_URL ?>/pelanggan?profile">Profile</a>
+                            <?php endif ?>
+
                             <a class="dropdown-item" href="<?= BASE_URL ?>?logout">Logout</a>
+
                         </ul>
                     </li>
                 </ul>

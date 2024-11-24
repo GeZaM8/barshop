@@ -55,6 +55,14 @@ class UserController extends Database
         return $result;
     }
 
+    function getUserByUsername($username)
+    {
+        $query = "SELECT * FROM user WHERE username = '$username'";
+        $result = mysqli_query($this->db, $query);
+
+        return mysqli_fetch_assoc($result);
+    }
+
     function checkLevel()
     {
         switch ($_SESSION['level']) {

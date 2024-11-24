@@ -76,7 +76,7 @@ if (isset($_GET['delete'])) {
                                             <?php
                                             $dataUser = $user->getAllUser();
                                             while ($usr = mysqli_fetch_assoc($dataUser)): ?>
-                                                <?php if ($usr['level'] == 'Pelanggan' && !$pelanggan->checkPelangganById($usr['id'])): ?>
+                                                <?php if ($usr['level'] == 'Pelanggan' && !!(mysqli_num_rows($pelanggan->checkPelangganById($usr['id'])) > 0)): ?>
                                                     <option value="<?= $usr['id'] ?>"><?= $usr['username'] ?></option>
                                                 <?php endif ?>
                                             <?php endwhile ?>

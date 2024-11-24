@@ -64,9 +64,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </td>
                         <td style="width: 100px;">
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPesan" data-kode-barang="<?= $brg['kode'] ?>">
-                                Pesan
-                            </button>
+                            <?php if ($brg['jumlah'] <= 5): ?>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPesan" data-kode-barang="<?= $brg['kode'] ?>">
+                                    Pesan
+                                </button>
+                            <?php endif ?>
                         </td>
                     </tr>
                 <?php endwhile ?>

@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <td><?= $usr['password'] ?></td>
                         <td><?= $usr['level'] ?></td>
                         <td style="width: 120px;">
-                            <?php if ($usr['level'] == 'Pelanggan' && !$pelanggan->checkPelangganById($usr['id'])): ?>
+                            <?php if ($usr['level'] == 'Pelanggan' && !(mysqli_num_rows($pelanggan->checkPelangganById($usr['id'])) > 0)): ?>
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#lengkapiData" data-id-account="<?= $usr['id'] ?>">
                                     Melengkapi
