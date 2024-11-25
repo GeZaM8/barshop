@@ -11,6 +11,7 @@ class TransaksiController extends Database
     function __construct()
     {
         $this->pelanggan = new PelangganController();
+        parent::__construct();
     }
 
     function getAllTransaksi()
@@ -22,18 +23,23 @@ class TransaksiController extends Database
         return $result;
     }
 
-    function checkoutTransaksi($data)
+    function beli($data)
     {
-        $dataPelanggan = mysqli_fetch_assoc($this->pelanggan->checkPelangganById($_SESSION['id']));
-        if ($dataPelanggan == null) {
-            return false;
-        }
-        $kode_pelanggan = $data['kode'];
-
-        $query = "INSERT INTO transaksi (tanggal_order, kode_pelanggan) VALUES ('NOW()', $kode_pelanggan)";
+        $kode_pelanggan = $data['beli'];
+        $query = "INSERT INTO transaksi(kode_pelanggan) VALUES ($kode_pelanggan)";
         $result = mysqli_query($this->db, $query);
+        $id_transaksi = mysqli_insert_id($this->db);
 
-        return $result;
+        $cart = new CartController();
+        $dataCart = $cart->getAllCart();
+        while ($crt = mysqli_fetch_assoc($dataCart)) {
+            if ($crt['jumlah_barang'] == 0) continue;
+            $query = "INSERT INTO detail_transaksi VALUES (0, $id_transaksi, $crt[kode_barang], $crt[jumlah_barang])";
+            $result = mysqli_query($this->db, $query);
+        }
+        $cart->deleteAllCart($_SESSION['id']);
+
+        return true;
     }
 
     function updateTransaksi($data, $nomor)
@@ -46,6 +52,14 @@ class TransaksiController extends Database
 
         $query = "UPDATE transaksi SET tanggal_order = '$tanggal_order', kode_pelanggan = $kode_pelanggan, kode_barang = $kode_barang, jumlah_barang = $jumlah_barang, status = '$status'
                 WHERE nomor_order = $nomor";
+        $result = mysqli_query($this->db, $query);
+
+        return $result;
+    }
+
+    function getTransaksiById($id)
+    {
+        $query = "SELECT * FROM transaksiview WHERE kode_pelanggan = $id";
         $result = mysqli_query($this->db, $query);
 
         return $result;

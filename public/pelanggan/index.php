@@ -14,8 +14,7 @@ $pelanggan = new PelangganController();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['edit'])) {
         $_POST['id'] = $_SESSION['id'];
-        $data = $pelanggan->checkPelangganById($_SESSION["id"]);
-        $plg = mysqli_fetch_assoc($data);
+        $plg = $_SESSION['pelanggan'];
         if (!mysqli_num_rows($data) > 0) {
             $pelanggan->insertPelanggan($_POST);
         } else {
@@ -40,8 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="container mt-5">
         <?php if (isset($_GET['profile'])): ?>
             <?php
-            $data = $pelanggan->checkPelangganById($_SESSION["id"]);
-            $plg = mysqli_fetch_assoc($data);
+            $plg = $_SESSION['pelanggan'];
 
             ?>
 

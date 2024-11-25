@@ -1,23 +1,29 @@
 <?php
 
 use controllers\BarangController;
+use controllers\CartController;
 use controllers\TransaksiController;
 
 require_once __DIR__ . "/../../../app/bootstrap.php";
 
 $barang = new BarangController();
 $transaksi = new TransaksiController();
+$cart = new CartController();
 
 $data = $barang->getAllBarang();
 $error = false;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-}
-if (isset($_GET['check-out'])) {
-    if ($transaksi->checkoutTransaksi($_POST)) {
-        header('Location: ' . strtok($_SERVER["REQUEST_URI"], '?'));
-    } else {
-        $error = true;
+    if (isset($_POST['check-out'])) {
+        if ($_POST['jumlah'] == 0) {
+            header('Location: ' . $_SERVER['REQUEST_URI']);
+        }
+
+        if ($cart->insertCart($_POST['check-out'], $_POST['jumlah'])) {
+            header('Location: ' . $_SERVER['REQUEST_URI']);
+        } else {
+            $error = true;
+        }
     }
 }
 ?>
@@ -59,8 +65,11 @@ if (isset($_GET['check-out'])) {
                         <td><?= $brg['harga_beli'] ?></td>
                         <td><?= $brg['harga_jual'] ?></td>
                         <td><?= $brg['jumlah'] ?></td>
-                        <td style="width: 200px;">
-                            <a href="?check-out=<?= $brg['kode'] ?>" class="btn btn-primary">Check-Out</a>
+                        <td style="width: 200px;" class="">
+                            <form class="d-flex" method="post">
+                                <input type="number" class="form-control me-3" name="jumlah" value="0" style="width: 50px;">
+                                <button type="submit" class="btn btn-primary" name="check-out" value="<?= $brg['kode'] ?>">Check-Out</button>
+                            </form>
                         </td>
                     </tr>
                 <?php endwhile ?>

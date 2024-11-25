@@ -22,6 +22,12 @@ class UserController extends Database
         $_SESSION['username'] = $user['username'];
         $_SESSION['level'] = $user['level'];
 
+        if ($_SESSION['level'] == 'Pelanggan') {
+            $pelanggan = new PelangganController();
+            $plg = mysqli_fetch_assoc($pelanggan->checkPelangganById($_SESSION['id']));
+            $_SESSION['pelanggan'] = $plg;
+        }
+
         return mysqli_affected_rows($this->db);
     }
 
