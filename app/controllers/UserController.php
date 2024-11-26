@@ -22,11 +22,7 @@ class UserController extends Database
         $_SESSION['username'] = $user['username'];
         $_SESSION['level'] = $user['level'];
 
-        if ($_SESSION['level'] == 'Pelanggan') {
-            $pelanggan = new PelangganController();
-            $plg = mysqli_fetch_assoc($pelanggan->checkPelangganById($_SESSION['id']));
-            $_SESSION['pelanggan'] = $plg;
-        }
+        self::setPelanggan();
 
         return mysqli_affected_rows($this->db);
     }
@@ -82,6 +78,15 @@ class UserController extends Database
                 return header('Location: ' . BASE_URL . '/manager/');
             default:
                 return http_response_code(404);
+        }
+    }
+
+    function setPelanggan()
+    {
+        if ($_SESSION['level'] == 'Pelanggan') {
+            $pelanggan = new PelangganController();
+            $plg = mysqli_fetch_assoc($pelanggan->checkPelangganById($_SESSION['id']));
+            $_SESSION['pelanggan'] = $plg;
         }
     }
 }

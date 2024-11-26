@@ -13,6 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         header('Location: ' . strtok($_SERVER["REQUEST_URI"], '?'));
     }
+    if (isset($_POST['insert'])) {
+        if ($barang->insertBarang($_POST)) {
+        }
+        header('Location: ' . $_SERVER["REQUEST_URI"]);
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -30,6 +35,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <table class="table table-striped table-bordered shadow-sm caption-top">
             <caption>
                 <h3>Data Barang</h3>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insert">
+                    Insert
+                </button>
             </caption>
             <thead>
                 <tr>
@@ -78,6 +87,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <?php endwhile ?>
             </tbody>
         </table>
+    </div>
+
+
+    <!-- Modal insert -->
+    <div class="modal fade" id="insert" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <form class="modal-content" method="post">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Insert Transaksi</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control mb-3" name="nama" placeholder="Nama Barang">
+                    <input type="text" class="form-control mb-3" name="jenis" placeholder="Jenis Barang">
+                    <input type="text" class="form-control mb-3" name="satuan" placeholder="Jenis Satuan">
+                    <input type="number" class="form-control mb-3" name="harga_beli" placeholder="Harga Beli">
+                    <input type="number" class="form-control mb-3" name="harga_jual" placeholder="Harga Jual">
+                    <input type="number" class="form-control mb-3" name="jumlah" placeholder="Total Barang" min="0" value="">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" name="insert">Insert</button>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 

@@ -10,11 +10,13 @@ if (!isset($_SESSION['username']))
 
 $user = new UserController();
 $pelanggan = new PelangganController();
+$data = $pelanggan->checkPelangganById($_SESSION["id"]);
+$plg = mysqli_fetch_assoc($data);
+$user->setPelanggan();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['edit'])) {
         $_POST['id'] = $_SESSION['id'];
-        $plg = $_SESSION['pelanggan'];
         if (!mysqli_num_rows($data) > 0) {
             $pelanggan->insertPelanggan($_POST);
         } else {
@@ -38,10 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php require_once BASE_PATH . '/template/navbar.php' ?>
     <div class="container mt-5">
         <?php if (isset($_GET['profile'])): ?>
-            <?php
-            $plg = $_SESSION['pelanggan'];
-
-            ?>
 
             <form action="" method="post" class="container mt-5 w-75 border p-5 rounded-4 bg-body shadow">
                 <h4 class="mb-5 text-center" style="font-weight: bold;">Profile</h4>

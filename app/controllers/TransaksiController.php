@@ -27,6 +27,7 @@ class TransaksiController extends Database
     {
         $kode_pelanggan = $data['beli'];
         $query = "INSERT INTO transaksi(kode_pelanggan) VALUES ($kode_pelanggan)";
+        echo $query;
         $result = mysqli_query($this->db, $query);
         $id_transaksi = mysqli_insert_id($this->db);
 

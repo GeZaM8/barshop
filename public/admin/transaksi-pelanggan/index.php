@@ -1,10 +1,12 @@
 <?php
 
+use controllers\DetailTransaksiController;
 use controllers\TransaksiController;
 
 require_once __DIR__ . "/../../../app/bootstrap.php";
 
 $transaksi = new TransaksiController();
+$detail = new DetailTransaksiController();
 $data = $transaksi->getAllTransaksi();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -37,15 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </caption>
             <thead>
                 <tr>
-                    <th scope="col" class="text-center">Nomor</th>
+                    <th scope="col" class="text-center" style="width: 50px;">Nomor</th>
                     <th scope="col">Tanggal Order</th>
-                    <th scope="col">Kode Pelanggan</th>
-                    <th scope="col">Nama Pelanggan</th>
-                    <th scope="col">Kode Barang</th>
-                    <th scope="col">Jenis Barang</th>
-                    <th scope="col">Nama Barang</th>
-                    <th scope="col">Jumlah Barang</th>
-                    <th scope="col">Total Harga</th>
+                    <th scope="col">Barang</th>
+                    <!-- <th scope="col">Total Harga</th> -->
                     <th scope="col" class="bg-info-subtle">Status</th>
                     <th scope="col">Aksi</th>
                 </tr>
@@ -87,15 +84,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     <?php else: ?>
                         <tr>
-                            <th scope="row" class="text-center"><?= $trs['nomor_order'] ?></th>
+                            <td scope="row" class="text-center"><?= $trs['nomor_order'] ?></td>
                             <td><?= $trs['tanggal_order'] ?></td>
-                            <td><?= $trs['kode_pelanggan'] ?></td>
-                            <td><?= $trs['nama_pelanggan'] ?></td>
-                            <td><?= $trs['kode_barang'] ?></td>
-                            <td><?= $trs['jenis_barang'] ?></td>
-                            <td><?= $trs['nama_barang'] ?></td>
-                            <td><?= $trs['jumlah_barang'] ?></td>
-                            <td><?= $trs['harga'] ?></td>
+                            <td>
+                                <ul class="list-group">
+                                    <?php
+                                    $dataDetail = $detail->getDetailByOrder($trs['nomor_order']);
+                                    while ($dtl = mysqli_fetch_assoc($dataDetail)):
+                                    ?>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <?= $dtl['kode_barang'] ?>. <?= $dtl['nama_barang'] ?> (<?= $dtl['jenis_barang'] ?>): Rp<?= number_format($dtl['total_harga'], 0, ',', '.') ?>
+                                            <span class="badge text-bg-primary rounded-pill" style="font-size: 15px"><?= $dtl['jumlah_barang'] ?></span>
+                                        </li>
+                                    <?php endwhile ?>
+                                </ul>
+                            </td>
+                            <!-- <td><?= $trs['harga'] ?></td> -->
                             <td class="<?= $status ?>"><?= $trs['status'] ?></td>
                             <td style="width: 200px;">
                                 <a href="?edit=<?= $trs['nomor_order'] ?>" class="btn btn-primary">Edit</a>

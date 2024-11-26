@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <td><?= $brg['jumlah'] ?></td>
                         <td style="width: 200px;" class="">
                             <form class="d-flex" method="post">
-                                <input type="number" class="form-control me-3" name="jumlah" value="0" style="width: 50px;">
+                                <input type="number" class="form-control me-3" name="jumlah" value="0" style="width: 50px;" min="0" max="<?= $brg['jumlah'] ?>">
                                 <button type="submit" class="btn btn-primary" name="check-out" value="<?= $brg['kode'] ?>">Check-Out</button>
                             </form>
                         </td>

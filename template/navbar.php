@@ -64,7 +64,7 @@ require_once BASE_PATH . "/app/bootstrap.php";
                             <a class="nav-link active" aria-current="page" href="<?= BASE_URL ?>/pelanggan/cart">Cart</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="<?= BASE_URL ?>/pelanggan/transaksi">Tarnsaksi</a>
+                            <a class="nav-link active" aria-current="page" href="<?= BASE_URL ?>/pelanggan/transaksi">Transaksi</a>
                         </li>
                     <?php endif ?>
 

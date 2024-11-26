@@ -16,6 +16,21 @@ class BarangController extends Database
         return $result;
     }
 
+    function insertBarang($data)
+    {
+        $nama = $data['nama'];
+        $jenis = $data['jenis'];
+        $satuan = $data['satuan'];
+        $harga_beli = $data['harga_beli'];
+        $harga_jual = $data['harga_jual'];
+        $jumlah = $data['jumlah'];
+
+        $query = "INSERT INTO barang VALUES (0, '$nama', '$jenis', '$satuan', $harga_beli, $harga_jual, $jumlah)";
+        $result = mysqli_query($this->db, $query);
+
+        return $result;
+    }
+
     function updateBarang($data, $kode)
     {
         $nama = $data['nama'];
