@@ -6,6 +6,10 @@ use controllers\PesananController;
 
 require_once __DIR__ . "/../../../app/bootstrap.php";
 
+if (!isset($_SESSION['username']))
+    return header('Location: ' . BASE_URL . '/index.php');
+if ($_SESSION['level'] != "Manager") return header('Location: ' . BASE_URL . '/index.php');
+
 $barang = new BarangController();
 $data = $barang->getAllBarang();
 

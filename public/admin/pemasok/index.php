@@ -4,6 +4,10 @@ use controllers\PemasokController;
 
 require_once __DIR__ . "/../../../app/bootstrap.php";
 
+if (!isset($_SESSION['username']))
+    return header('Location: ' . BASE_URL . '/index.php');
+if ($_SESSION['level'] != "Admin") return header('Location: ' . BASE_URL . '/index.php');
+
 $pemasok = new PemasokController();
 $data = $pemasok->getAllpemasok();
 

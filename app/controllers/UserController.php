@@ -22,7 +22,8 @@ class UserController extends Database
         $_SESSION['username'] = $user['username'];
         $_SESSION['level'] = $user['level'];
 
-        self::setPelanggan();
+        if ($_SESSION['level'] == 'Pelanggan') self::setPelanggan();
+        else if ($_SESSION['level'] == 'Pemasok') self::setPemasok();
 
         return mysqli_affected_rows($this->db);
     }
@@ -83,10 +84,15 @@ class UserController extends Database
 
     function setPelanggan()
     {
-        if ($_SESSION['level'] == 'Pelanggan') {
-            $pelanggan = new PelangganController();
-            $plg = mysqli_fetch_assoc($pelanggan->checkPelangganById($_SESSION['id']));
-            $_SESSION['pelanggan'] = $plg;
-        }
+        $pelanggan = new PelangganController();
+        $plg = mysqli_fetch_assoc($pelanggan->checkPelangganById($_SESSION['id']));
+        $_SESSION['pelanggan'] = $plg;
+    }
+
+    function setPemasok()
+    {
+        $pemasok = new PemasokController();
+        $pms = mysqli_fetch_assoc($pemasok->checkPemasokById());
+        $_SESSION['pemasok'] = $pms;
     }
 }

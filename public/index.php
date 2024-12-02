@@ -48,10 +48,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <form action="" method="post" class="container mt-5 w-25 border p-5 rounded-4 bg-body shadow">
       <h4 class="mb-5 text-center" style="font-weight: bold;">REGISTER</h4>
       <div class=" mb-3">
-        <input type="text" class="form-control" id="username" name="username" placeholder="Username" autofocus>
+        <input type="text" class="form-control" id="username" name="username" placeholder="Username" autofocus required>
       </div>
       <div class="mb-3">
-        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
       </div>
       <div class="mb-3">
         <input type="password" class="form-control" id="cPassword" name="cPassword" placeholder="Confirm Password">

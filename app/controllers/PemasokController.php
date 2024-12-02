@@ -43,4 +43,15 @@ class PemasokController extends Database
 
         return $result;
     }
+
+    function checkPemasokById($id = 0)
+    {
+        $user = ($id == 0) ? $_SESSION['id'] : $id;
+        $query = "SELECT * FROM pemasok p 
+                INNER JOIN user u 
+                ON p.id_account = u.id 
+                WHERE u.id = $user";
+        $result = mysqli_query($this->db, $query);
+        return $result;
+    }
 }

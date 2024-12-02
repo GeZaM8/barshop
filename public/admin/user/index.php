@@ -1,9 +1,14 @@
 <?php
 
 use controllers\PelangganController;
+use controllers\PemasokController;
 use controllers\UserController;
 
 require_once __DIR__ . "/../../../app/bootstrap.php";
+
+if (!isset($_SESSION['username']))
+    return header('Location: ' . BASE_URL . '/index.php');
+if ($_SESSION['level'] != "Admin") return header('Location: ' . BASE_URL . '/index.php');
 
 $user = new UserController();
 $pelanggan = new PelangganController();
@@ -12,7 +17,13 @@ $data = $user->getAllUser();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['insert'])) {
-        if ($user->registerUser($_POST)) {
+        if ($_POST['level'] == 'Pemasok') {
+            $pemasok = new PemasokController();
+            if ($pemasok->insertPemasok($_POST)) {
+            }
+        } else {
+            if ($user->registerUser($_POST)) {
+            }
         }
         header('Location: ' . $_SERVER['REQUEST_URI']);
     }
@@ -93,6 +104,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <option value="Pemasok">Pemasok</option>
                         <option value="Manager">Manager</option>
                     </select>
+                    <div class="d-none" id="pemasok">
+                        <hr>
+                        <h1 class="fs-5">Pemasok</h1>
+                        <input type="text" class="form-control mb-3" name="nama" placeholder="Nama">
+                        <input type="text" class="form-control mb-3" name="alamat" placeholder="Alamat">
+                        <input type="tel" class="form-control mb-3" name="no_telp" placeholder="No. Telepon">
+                        <input type="email" class="form-control mb-3" name="email" placeholder="Email">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success" name="insert">Insert</button>
@@ -132,6 +151,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             modal.querySelector('#id').value = id;
         });
+
+        const level = document.getElementById('level');
+        level.addEventListener('change', function() {
+            const pemasokDiv = document.getElementById('pemasok');
+            if (level.value == "Pemasok") {
+                pemasokDiv.classList.remove('d-none');
+                pemasokDiv.classList.add('d-block');
+            } else {
+                pemasokDiv.classList.remove('d-block');
+                pemasokDiv.classList.add('d-none');
+            }
+        })
     </script>
 </body>
 

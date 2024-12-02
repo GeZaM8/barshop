@@ -6,11 +6,11 @@ use models\Database;
 
 class BarangController extends Database
 {
-    function getAllBarang()
+    function getAllBarang($queryPlus = "")
     {
         global $con;
 
-        $query = "SELECT * FROM barang";
+        $query = "SELECT * FROM barang $queryPlus";
         $result = mysqli_query($this->db, $query);
 
         return $result;
@@ -49,6 +49,14 @@ class BarangController extends Database
     function getBarangByKode($kode)
     {
         $query = "SELECT * FROM barang WHERE kode = $kode";
+        $result = mysqli_query($this->db, $query);
+
+        return $result;
+    }
+
+    function setStok($kode, $jumlah)
+    {
+        $query = "UPDATE barang SET jumlah = jumlah + $jumlah WHERE kode = $kode";
         $result = mysqli_query($this->db, $query);
 
         return $result;

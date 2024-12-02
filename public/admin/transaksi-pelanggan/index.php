@@ -5,6 +5,10 @@ use controllers\TransaksiController;
 
 require_once __DIR__ . "/../../../app/bootstrap.php";
 
+if (!isset($_SESSION['username']))
+    return header('Location: ' . BASE_URL . '/index.php');
+if ($_SESSION['level'] != "Admin") return header('Location: ' . BASE_URL . '/index.php');
+
 $transaksi = new TransaksiController();
 $detail = new DetailTransaksiController();
 $data = $transaksi->getAllTransaksi();
@@ -41,6 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <tr>
                     <th scope="col" class="text-center" style="width: 50px;">Nomor</th>
                     <th scope="col">Tanggal Order</th>
+                    <th scope="col">Kode Pelanggan</th>
+                    <th scope="col">Nama Pelanggan</th>
                     <th scope="col">Barang</th>
                     <!-- <th scope="col">Total Harga</th> -->
                     <th scope="col" class="bg-info-subtle">Status</th>
@@ -86,6 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <tr>
                             <td scope="row" class="text-center"><?= $trs['nomor_order'] ?></td>
                             <td><?= $trs['tanggal_order'] ?></td>
+                            <td><?= $trs['kode_pelanggan'] ?></td>
+                            <td><?= $trs['nama_pelanggan'] ?></td>
                             <td>
                                 <ul class="list-group">
                                     <?php

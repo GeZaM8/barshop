@@ -5,6 +5,10 @@ use controllers\TransaksiController;
 
 require_once __DIR__ . "/../../../app/bootstrap.php";
 
+if (!isset($_SESSION['username']))
+    return header('Location: ' . BASE_URL . '/index.php');
+if ($_SESSION['level'] != "Pelanggan") return header('Location: ' . BASE_URL . '/index.php');
+
 $transaksi = new TransaksiController();
 $detail = new DetailTransaksiController();
 

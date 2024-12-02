@@ -23,20 +23,34 @@ class TransaksiController extends Database
         return $result;
     }
 
+    function getTransaksi($nomor_order)
+    {
+        $query = "SELECT * FROM transaksiview WHERE nomor_order = $nomor_order";
+        $result = mysqli_query($this->db, $query);
+
+        return $result;
+    }
+
     function beli($data)
     {
         $kode_pelanggan = $data['beli'];
         $query = "INSERT INTO transaksi(kode_pelanggan) VALUES ($kode_pelanggan)";
-        echo $query;
         $result = mysqli_query($this->db, $query);
         $id_transaksi = mysqli_insert_id($this->db);
 
         $cart = new CartController();
+        $detail = new DetailTransaksiController();
+        $barang = new BarangController();
         $dataCart = $cart->getAllCart();
         while ($crt = mysqli_fetch_assoc($dataCart)) {
             if ($crt['jumlah_barang'] == 0) continue;
-            $query = "INSERT INTO detail_transaksi VALUES (0, $id_transaksi, $crt[kode_barang], $crt[jumlah_barang])";
-            $result = mysqli_query($this->db, $query);
+            $id_detail = $detail->insertDetail($id_transaksi, $crt);
+
+            $dtl = mysqli_fetch_assoc($detail->getDetail($id_detail));
+            $dataBarang = mysqli_fetch_assoc($barang->getBarangByKode($dtl['kode_barang']));
+            if ($dataBarang['jumlah'] - $dtl['jumlah_barang'] < 0) {
+                $detail->deleteDetail($id_detail);
+            } else $barang->setStok($dtl['kode_barang'], -$dtl['jumlah_barang']);
         }
         $cart->deleteAllCart($_SESSION['id']);
 
