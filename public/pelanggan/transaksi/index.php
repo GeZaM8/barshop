@@ -35,18 +35,20 @@ $data = $transaksi->getTransaksiById($_SESSION['pelanggan']['kode']);
                     <th scope="col" class="text-center" style="width: 50px;">Nomor</th>
                     <th scope="col">Tanggal Order</th>
                     <th scope="col">Barang</th>
-                    <!-- <th scope="col">Total Harga</th> -->
-                    <th scope="col" class="bg-info-subtle">Status</th>
+                    <th scope="col">Total Harga</th>
+                    <!-- <th scope="col" class="bg-info-subtle">Status</th> -->
                 </tr>
             </thead>
             <tbody>
-                <?php while ($trs = mysqli_fetch_assoc($data)): ?>
+                <?php
+                $harga = 0;
+                while ($trs = mysqli_fetch_assoc($data)): ?>
                     <?php
-                    $status = match ($trs['status']) {
-                        'Pending' => 'bg-warning-subtle',
-                        'Paid' => 'bg-success-subtle',
-                        'Cancelled' => 'bg-danger-subtle'
-                    }
+                    // $status = match ($trs['status']) {
+                    //     'Pending' => 'bg-warning-subtle',
+                    //     'Paid' => 'bg-success-subtle',
+                    //     'Cancelled' => 'bg-danger-subtle'
+                    // }
                     ?>
                     <tr>
                         <th scope="row" class="text-center"><?= $trs['nomor_order'] ?></th>
@@ -55,7 +57,9 @@ $data = $transaksi->getTransaksiById($_SESSION['pelanggan']['kode']);
                             <ul class="list-group">
                                 <?php
                                 $dataDetail = $detail->getDetailByOrder($trs['nomor_order']);
+                                $harga = 0;
                                 while ($dtl = mysqli_fetch_assoc($dataDetail)):
+                                    $harga += $dtl['total_harga'];
                                 ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <?= $dtl['kode_barang'] ?>. <?= $dtl['nama_barang'] ?> (<?= $dtl['jenis_barang'] ?>): Rp<?= number_format($dtl['total_harga'], 0, ',', '.') ?>
@@ -64,8 +68,8 @@ $data = $transaksi->getTransaksiById($_SESSION['pelanggan']['kode']);
                                 <?php endwhile ?>
                             </ul>
                         </td>
-                        <!-- <td><?= $trs['harga'] ?></td> -->
-                        <td class="<?= $status ?>"><?= $trs['status'] ?></td>
+                        <td>Rp. <?= number_format($harga) ?></td>
+                        <!-- <td class="<?= $status ?>"><?= $trs['status'] ?></td> -->
                     </tr>
                 <?php endwhile ?>
             </tbody>

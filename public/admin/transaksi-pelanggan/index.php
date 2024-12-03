@@ -48,73 +48,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <th scope="col">Kode Pelanggan</th>
                     <th scope="col">Nama Pelanggan</th>
                     <th scope="col">Barang</th>
-                    <!-- <th scope="col">Total Harga</th> -->
-                    <th scope="col" class="bg-info-subtle">Status</th>
-                    <th scope="col">Aksi</th>
+                    <th scope="col">Total Harga</th>
                 </tr>
             </thead>
             <tbody>
-                <?php while ($trs = mysqli_fetch_assoc($data)): ?>
-                    <?php
-                    $status = match ($trs['status']) {
-                        'Pending' => 'bg-warning-subtle',
-                        'Paid' => 'bg-success-subtle',
-                        'Cancelled' => 'bg-danger-subtle'
-                    }
-                    ?>
-                    <?php if (isset($_GET['edit']) && $_GET['edit'] == $trs['nomor_order']): ?>
-                        <tr>
-                            <form action="?save=<?= $trs['nomor_order'] ?>" method="post">
-                                <th scope="row"><input type="text" class="form-control text-center" value="<?= $trs['nomor_order'] ?>" disabled></th>
-                                <td><input type="date" class="form-control" name="tanggal_order" value="<?= $trs['tanggal_order'] ?>" required></td>
-                                <td><input type="text" class="form-control" name="kode_pelanggan" value="<?= $trs['kode_pelanggan'] ?>" required></td>
-                                <td><input type="text" class="form-control" name="nama_pelanggan" value="<?= $trs['nama_pelanggan'] ?>" disabled></td>
-                                <td><input type="text" class="form-control" name="kode_barang" value="<?= $trs['kode_barang'] ?>" required></td>
-                                <td><input type="text" class="form-control" name="jenis_barang" value="<?= $trs['jenis_barang'] ?>" disabled></td>
-                                <td><input type="text" class="form-control" name="nama_barang" value="<?= $trs['nama_barang'] ?>" disabled></td>
-                                <td><input type="number" class="form-control" name="jumlah_barang" value="<?= $trs['jumlah_barang'] ?>" required></td>
-                                <td><input type="number" class="form-control" name="harga" value="<?= $trs['harga'] ?>" disabled></td>
-                                <td>
-                                    <select class="form-control" name="status" required>
-                                        <option value="Pending" <?= $trs['status'] == 'Pending' ? 'selected' : '' ?>>Pending</option>
-                                        <option value="Paid" <?= $trs['status'] == 'Paid' ? 'selected' : '' ?>>Paid</option>
-                                        <option value="Cancelled" <?= $trs['status'] == 'Cancelled' ? 'selected' : '' ?>>Cancelled</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <button type="submit" class="btn btn-success">Save</button>
-                                    <a href="?" class="btn btn-danger">Cancel</a>
-                                </td>
-                            </form>
-                        </tr>
-
-                    <?php else: ?>
-                        <tr>
-                            <td scope="row" class="text-center"><?= $trs['nomor_order'] ?></td>
-                            <td><?= $trs['tanggal_order'] ?></td>
-                            <td><?= $trs['kode_pelanggan'] ?></td>
-                            <td><?= $trs['nama_pelanggan'] ?></td>
-                            <td>
-                                <ul class="list-group">
-                                    <?php
-                                    $dataDetail = $detail->getDetailByOrder($trs['nomor_order']);
-                                    while ($dtl = mysqli_fetch_assoc($dataDetail)):
-                                    ?>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <?= $dtl['kode_barang'] ?>. <?= $dtl['nama_barang'] ?> (<?= $dtl['jenis_barang'] ?>): Rp<?= number_format($dtl['total_harga'], 0, ',', '.') ?>
-                                            <span class="badge text-bg-primary rounded-pill" style="font-size: 15px"><?= $dtl['jumlah_barang'] ?></span>
-                                        </li>
-                                    <?php endwhile ?>
-                                </ul>
-                            </td>
-                            <!-- <td><?= $trs['harga'] ?></td> -->
-                            <td class="<?= $status ?>"><?= $trs['status'] ?></td>
-                            <td style="width: 200px;">
-                                <a href="?edit=<?= $trs['nomor_order'] ?>" class="btn btn-primary">Edit</a>
-                                <a href="?delete=<?= $trs['nomor_order'] ?>" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin menghapusnya?')">Delete</a>
-                            </td>
-                        </tr>
-                    <?php endif ?>
+                <?php
+                $harga = 0;
+                while ($trs = mysqli_fetch_assoc($data)): ?>
+                    <tr>
+                        <td scope="row" class="text-center"><?= $trs['nomor_order'] ?></td>
+                        <td><?= $trs['tanggal_order'] ?></td>
+                        <td><?= $trs['kode_pelanggan'] ?></td>
+                        <td><?= $trs['nama_pelanggan'] ?></td>
+                        <td>
+                            <ul class="list-group">
+                                <?php
+                                $dataDetail = $detail->getDetailByOrder($trs['nomor_order']);
+                                $harga = 0;
+                                while ($dtl = mysqli_fetch_assoc($dataDetail)):
+                                    $harga += $dtl['total_harga'];
+                                ?>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <?= $dtl['kode_barang'] ?>. <?= $dtl['nama_barang'] ?> (<?= $dtl['jenis_barang'] ?>): Rp<?= number_format($dtl['total_harga'], 0, ',', '.') ?>
+                                        <span class="badge text-bg-primary rounded-pill" style="font-size: 15px"><?= $dtl['jumlah_barang'] ?></span>
+                                    </li>
+                                <?php endwhile ?>
+                            </ul>
+                        </td>
+                        <td>Rp. <?= number_format($harga) ?></td>
+                    </tr>
                 <?php endwhile ?>
             </tbody>
         </table>

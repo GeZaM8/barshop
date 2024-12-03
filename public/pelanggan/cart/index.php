@@ -23,6 +23,11 @@ if (isset($_GET['beli'])) {
     }
     header('Location: ' . strtok($_SERVER["REQUEST_URI"], '?'));
 }
+if (isset($_GET['cancel'])) {
+    if ($cart->deleteCart($_GET['cancel'])) {
+    }
+    header('Location: ' . strtok($_SERVER["REQUEST_URI"], '?'));
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,24 +50,32 @@ if (isset($_GET['beli'])) {
                     <th scope="col" class="text-center">Id Cart</th>
                     <th scope="col">Kode Barang</th>
                     <th scope="col">Jumlah Barang</th>
+                    <th scope="col">Harga Barang</th>
+                    <th scope="col">Harga</th>
                     <th scope="col">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                <?php while ($crt = mysqli_fetch_assoc($data)): ?>
+                <?php
+                $harga = 0;
+                while ($crt = mysqli_fetch_assoc($data)):
+                    $harga += $crt['total_harga']; ?>
                     <tr>
                         <th scope="row" class="text-center" style="width: 70px;"><?= $crt['id_cart'] ?></th>
                         <td><?= $crt['kode_barang'] ?></td>
                         <td><?= $crt['jumlah_barang'] ?></td>
+                        <td>Rp. <?= number_format($crt['harga_jual']) . "/" . $crt['satuan'] ?></td>
+                        <td>Rp. <?= number_format($crt['total_harga']) ?></td>
                         <td style="width: 200px;" class="">
-                            <!-- <a href="" class="btn btn-primary" name="check-out" value="<?= $crt['kode'] ?>">Check-Out</a> -->
+                            <a href="?cancel=<?= $crt['id_cart'] ?>" class="btn btn-danger" name="check-out">Cancel</a>
                         </td>
                     </tr>
                 <?php endwhile ?>
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="4">
+                    <td colspan="6">
+                        <div class="p-2">Total harga: Rp.<?= number_format($harga) ?></div>
                         <a href="?beli=<?= $plg['kode'] ?>" class="btn btn-primary">Beli</a>
                     </td>
                 </tr>

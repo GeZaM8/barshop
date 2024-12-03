@@ -6,7 +6,7 @@ use models\Database;
 
 class DetailTransaksiController extends Database
 {
-    function insertDetail($id_transaksi, $crt)
+    function  insertDetail($id_transaksi, $crt)
     {
         $query = "INSERT INTO detail_transaksi VALUES (0, $id_transaksi, $crt[kode_barang], $crt[jumlah_barang])";
         $result = mysqli_query($this->db, $query);
@@ -34,6 +34,14 @@ class DetailTransaksiController extends Database
     function deleteDetail($id_detail)
     {
         $query = "DELETE FROM detail_transaksi WHERE nomor_detail = $id_detail";
+        $result = mysqli_query($this->db, $query);
+
+        return $result;
+    }
+
+    function getTotalHarga($queryPlus = "")
+    {
+        $query = "SELECT SUM(total_harga) as Total FROM detail_transaksiview $queryPlus";
         $result = mysqli_query($this->db, $query);
 
         return $result;

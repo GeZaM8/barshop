@@ -80,8 +80,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <td><?= $brg['nama'] ?></td>
                             <td><?= $brg['jenis'] ?></td>
                             <td><?= $brg['satuan'] ?></td>
-                            <td><?= $brg['harga_beli'] ?></td>
-                            <td><?= $brg['harga_jual'] ?></td>
+                            <td>Rp. <?= number_format($brg['harga_beli']) ?></td>
+                            <td>Rp. <?= number_format($brg['harga_jual']) ?></td>
                             <td><?= $brg['jumlah'] ?></td>
                             <td style="width: 200px;">
                                 <a href="?edit=<?= $brg['kode'] ?>" class="btn btn-primary">Edit</a>

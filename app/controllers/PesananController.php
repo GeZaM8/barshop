@@ -9,7 +9,6 @@ class PesananController extends Database
     function getAllPesanan($queryPlus = "")
     {
         $query = "SELECT * FROM pesananView $queryPlus ORDER BY status";
-
         $result = mysqli_query($this->db, $query);
 
         return $result;
@@ -67,6 +66,14 @@ class PesananController extends Database
         $pesanan = mysqli_fetch_assoc(self::getPesanan($nomor));
         $barang = new BarangController();
         $brg = $barang->setStok($pesanan['kode_barang'], $pesanan['jumlah_barang']);
+
+        return $result;
+    }
+
+    function getTotalHarga()
+    {
+        $query = "SELECT SUM(harga) as Total FROM pesananView";
+        $result = mysqli_query($this->db, $query);
 
         return $result;
     }

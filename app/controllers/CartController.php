@@ -9,7 +9,7 @@ class CartController extends Database
 {
     function getAllCart()
     {
-        $query = "SELECT * FROM cart WHERE id_account = $_SESSION[id]";
+        $query = "SELECT * FROM cartview WHERE id_account = $_SESSION[id]";
         $result = mysqli_query($this->db, $query);
 
         return $result;
@@ -36,6 +36,14 @@ class CartController extends Database
         $query = "DELETE FROM cart WHERE id_account = $id";
         $result = mysqli_query($this->db, $query);
         mysqli_query($this->db, "ALTER TABLE cart AUTO_INCREMENT = 1");
+
+        return $result;
+    }
+
+    function deleteCart($cart)
+    {
+        $query = "DELETE FROM cart WHERE id_cart = $cart";
+        $result = mysqli_query($this->db, $query);
 
         return $result;
     }

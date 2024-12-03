@@ -61,9 +61,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <td><?= $brg['nama'] ?></td>
                         <td><?= $brg['jenis'] ?></td>
                         <td><?= $brg['satuan'] ?></td>
-                        <td><?= $brg['harga_beli'] ?></td>
-                        <td><?= $brg['harga_jual'] ?></td>
-                        <td class="<?php if ($brg['jumlah'] == 0) echo 'bg-danger-subtle' ?>">
+                        <td>Rp. <?= number_format($brg['harga_beli']) ?></td>
+                        <td>Rp. <?= number_format($brg['harga_jual']) ?></td>
+                        <td class="<?php if ($brg['jumlah'] == 0) echo 'bg-danger-subtle';
+                                    else if ($brg['jumlah'] > 0 && $brg['jumlah'] <= 5) echo 'bg-warning-subtle' ?>">
                             <?= $brg['jumlah'] ?>
                         </td>
                         <td style="width: 100px;">

@@ -77,7 +77,7 @@ if (isset($_GET['cancel'])) {
                         <td><?= $psn['jenis_barang'] ?></td>
                         <td><?= $psn['nama_barang'] ?></td>
                         <td><?= $psn['jumlah_barang'] ?></td>
-                        <td><?= $psn['harga'] ?></td>
+                        <td>Rp. <?= number_format($psn['harga']) ?></td>
                         <td class="<?= $status ?>"><?= $psn['status'] ?></td>
                         <td>
                             <?php if ($psn['status'] == 'Pending'): ?>
